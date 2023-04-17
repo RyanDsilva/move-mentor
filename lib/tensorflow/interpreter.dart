@@ -35,10 +35,13 @@ class Classifier {
   }
 
   void performOperations(CameraImage cameraImage) {
-    image_lib.Image convertedImage = convertCameraImage(cameraImage);
+    image_lib.Image convertedImage;
     if (Platform.isAndroid) {
+      convertedImage = convertCameraImageAndroid(cameraImage);
       convertedImage = image_lib.copyRotate(convertedImage, 270);
       convertedImage = image_lib.flipHorizontal(convertedImage);
+    } else {
+      convertedImage = convertCameraImage(cameraImage);
     }
     inputImage = TensorImage(TfLiteType.float32);
     inputImage.loadImage(convertedImage);
@@ -49,7 +52,7 @@ class Classifier {
     frameNo += 1;
   }
 
-  static image_lib.Image _convertCameraImageBUGGY(CameraImage cameraImage) {
+  static image_lib.Image convertCameraImageAndroid(CameraImage cameraImage) {
     final int width = cameraImage.width;
     final int height = cameraImage.height;
 
@@ -142,7 +145,8 @@ class Classifier {
       // }
       _interpreter = interpreter ??
           await Interpreter.fromAsset(
-            "movenet_singlepose_thunder.tflite",
+            "model.tflite",
+            // "movenet_singlepose_thunder.tflite",
             options: interpreterOptions ?? InterpreterOptions()
               ..threads = 4,
           );

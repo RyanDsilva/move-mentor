@@ -24,4 +24,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/movenet_singlepose_thunder.tflite
+    - assets/model.tflite

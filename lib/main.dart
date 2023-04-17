@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movementor/screens/base.dart';
+import 'package:movementor/screens/pose.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,12 +12,17 @@ class MoveMentor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
+      title: 'MoveMentor',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.deepPurpleAccent,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('MoveMentor'),
         ),
-        body: const BaseScreen(),
+        body: const PoseScreen(),
       ),
     );
   }
