@@ -1,0 +1,27 @@
+name: movementor
+description: An application that motivates you to move
+publish_to: "none"
+version: 0.0.1+1
+
+environment:
+  sdk: ">=2.19.5 <3.0.0"
+
+dependencies:
+  camera: ^0.10.4
+  flutter:
+    sdk: flutter
+  image: ^3.3.0
+  path_provider: ^2.0.14
+  tflite_flutter: ^0.9.1
+  tflite_flutter_helper:
+    path: ./packages/tflite_flutter_helper
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/movenet_singlepose_thunder.tflite
