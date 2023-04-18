@@ -2,6 +2,10 @@
 
 > #### When Movement Meets Motication!
 
+<p align="center">
+    <img src="./assets/icon.png" width="200" height="200"/>
+</p>
+
 ### Setup
 
 Pre-Requisites: Flutter >= 3.7
@@ -28,7 +32,7 @@ install.bat -d
 > - Linux/ Mac => ~/.pub-cache/hosted/pub.dev/tflite_flutter-<version>/ios/
 > - Windows => %LOCALAPPDATA%\Pub\Cache\hosted\pub.dev\tflite_flutter-<version>\ios\
 
-> ** To use Metal on iOS: Download the file from this PR: https://github.com/am15h/tflite_flutter_plugin/pull/200/files and follow the instructions here: https://github.com/am15h/tflite_flutter_plugin/wiki/Build-iOS-binaries-with-GPU-delegate
+> \*\* To use Metal on iOS: Download the file from this PR: https://github.com/am15h/tflite_flutter_plugin/pull/200/files and follow the instructions here: https://github.com/am15h/tflite_flutter_plugin/wiki/Build-iOS-binaries-with-GPU-delegate
 
 3. Install Flutter Dependencies
 
