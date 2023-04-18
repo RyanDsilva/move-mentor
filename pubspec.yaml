@@ -10,51 +10,40 @@ dependencies:
   camera: ^0.10.4
   flutter:
     sdk: flutter
+  google_fonts: ^4.0.3
   image: ^3.3.0
+  lottie: ^2.3.2
   path_provider: ^2.0.14
   tflite_flutter: ^0.9.1
   tflite_flutter_helper:
     path: ./packages/tflite_flutter_helper
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.11.0
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.16
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.11.0
-  flutter_native_splash: ^2.2.16
 
 flutter:
   uses-material-design: true
   assets:
     - assets/model.tflite
     - assets/icon.png
+    - assets/icon-app.png
+    - assets/dancer-man.json
 
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon.png"
+  image_path: "assets/icon-app.png"
   min_sdk_android: 21
   remove_alpha_ios: false
 
 flutter_native_splash:
   color: "#ffffff"
   #background_image: "assets/background.png"
-
   image: assets/icon.png
-
-  # The branding property allows you to specify an image used as branding in the splash screen.
-  # It must be a png file. It is supported for Android, iOS and the Web.
-  branding: assets/icon.png
-
-  # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
-  # and bottomLeft. The default values is bottom if not specified or specified something else.
-  branding_mode: bottom
-
-  # Dark Mode
-  #color_dark: "#042a49"
-  #background_image_dark: "assets/dark-background.png"
-  #image_dark: assets/splash-invert.png
-  #branding_dark: assets/dart_dark.png
 
   android_12:
     # The image parameter sets the splash screen icon image.  If this parameter is not specified,
@@ -64,21 +53,13 @@ flutter_native_splash:
     # 640 pixels in diameter.
     # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
     # 768 pixels in diameter.
-    image: assets/icon.png
+    image: assets/icon-app.png
 
     # Splash screen background color.
     color: "#ffffff"
 
     # App icon background color.
     icon_background_color: "#ffffff"
-
-    # The branding property allows you to specify an image used as branding in the splash screen.
-    branding: assets/icon.png
-
-    # Dark Mode (Android 12)
-    #image_dark: assets/android12splash-invert.png
-    #color_dark: "#042a49"
-    #icon_background_color_dark: "#eeeeee"
 
   web: false
 

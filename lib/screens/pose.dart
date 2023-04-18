@@ -24,12 +24,18 @@ class PoseScreenState extends State<PoseScreen> {
   bool initialized = false;
   late List<dynamic> inferences;
   double paddingX = 0;
-  double paddingY = 10;
+  double paddingY = 0;
 
   @override
   void initState() {
     super.initState();
     initAsync();
+  }
+
+  @override
+  void dispose() {
+    cameraController?.dispose();
+    super.dispose();
   }
 
   void initAsync() async {
@@ -89,30 +95,32 @@ class PoseScreenState extends State<PoseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: paddingX,
-            vertical: paddingY,
+    return Scaffold(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: paddingX,
+              vertical: paddingY,
+            ),
+            child: initialized
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: CustomPaint(
+                      foregroundPainter: RenderLandmarks(inferences),
+                      child: !cameraController!.value.isInitialized
+                          ? Container()
+                          : AspectRatio(
+                              aspectRatio: cameraController!.value.aspectRatio,
+                              child: CameraPreview(cameraController!),
+                            ),
+                    ),
+                  )
+                : Container(),
           ),
-          child: initialized
-              ? SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.75,
-                  width: MediaQuery.of(context).size.width,
-                  child: CustomPaint(
-                    foregroundPainter: RenderLandmarks(inferences),
-                    child: !cameraController!.value.isInitialized
-                        ? Container()
-                        : AspectRatio(
-                            aspectRatio: cameraController!.value.aspectRatio,
-                            child: CameraPreview(cameraController!),
-                          ),
-                  ),
-                )
-              : Container(),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -184,11 +192,19 @@ class RenderLandmarks extends CustomPainter {
     for (List<dynamic> point in inferenceList) {
       if (point[2] > showPointConfidence) {
         if (point[2] < correctPointConfidence) {
-          pointsRed.add(Offset(point[0].toDouble() - (paddingX + 40),
-              point[1].toDouble() - paddingY));
+          pointsRed.add(
+            Offset(
+              point[0].toDouble() - (paddingX + 40),
+              point[1].toDouble() - (paddingY - 70),
+            ),
+          );
         } else {
-          pointsGreen.add(Offset(point[0].toDouble() - (paddingX + 40),
-              point[1].toDouble() - paddingY));
+          pointsGreen.add(
+            Offset(
+              point[0].toDouble() - (paddingX + 40),
+              point[1].toDouble() - (paddingY - 70),
+            ),
+          );
         }
       }
     }
@@ -197,9 +213,9 @@ class RenderLandmarks extends CustomPainter {
       if (inferenceList[edge[0]][2] > showPointConfidence &&
           inferenceList[edge[1]][2] > showPointConfidence) {
         double vertex1X = inferenceList[edge[0]][0].toDouble() - (paddingX + 40);
-        double vertex1Y = inferenceList[edge[0]][1].toDouble() - paddingY;
+        double vertex1Y = inferenceList[edge[0]][1].toDouble() - (paddingY - 70);
         double vertex2X = inferenceList[edge[1]][0].toDouble() - (paddingX + 40);
-        double vertex2Y = inferenceList[edge[1]][1].toDouble() - paddingY;
+        double vertex2Y = inferenceList[edge[1]][1].toDouble() - (paddingY - 70);
         final point1Confidence = inferenceList[edge[0]][2];
         final point2Confidence = inferenceList[edge[1]][2];
         // debugPrint("p1: $point1Confidence, p2: $point2Confidence");

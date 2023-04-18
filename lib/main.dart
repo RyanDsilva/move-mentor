@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movementor/screens/pose.dart';
+import 'package:movementor/screens/introduction.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,14 +16,9 @@ class MoveMentor extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurpleAccent,
+        colorSchemeSeed: Colors.orange.shade600,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('MoveMentor'),
-        ),
-        body: const PoseScreen(),
-      ),
+      home: const IntroductionScreen(),
     );
   }
 }
