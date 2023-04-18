@@ -20,8 +20,72 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.16
 
 flutter:
   uses-material-design: true
   assets:
     - assets/model.tflite
+    - assets/icon.png
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon.png"
+  min_sdk_android: 21
+  remove_alpha_ios: false
+
+flutter_native_splash:
+  color: "#ffffff"
+  #background_image: "assets/background.png"
+
+  image: assets/icon.png
+
+  # The branding property allows you to specify an image used as branding in the splash screen.
+  # It must be a png file. It is supported for Android, iOS and the Web.
+  branding: assets/icon.png
+
+  # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
+  # and bottomLeft. The default values is bottom if not specified or specified something else.
+  branding_mode: bottom
+
+  # Dark Mode
+  #color_dark: "#042a49"
+  #background_image_dark: "assets/dark-background.png"
+  #image_dark: assets/splash-invert.png
+  #branding_dark: assets/dart_dark.png
+
+  android_12:
+    # The image parameter sets the splash screen icon image.  If this parameter is not specified,
+    # the app's launcher icon will be used instead.
+    # Please note that the splash screen will be clipped to a circle on the center of the screen.
+    # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
+    # 640 pixels in diameter.
+    # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
+    # 768 pixels in diameter.
+    image: assets/icon.png
+
+    # Splash screen background color.
+    color: "#ffffff"
+
+    # App icon background color.
+    icon_background_color: "#ffffff"
+
+    # The branding property allows you to specify an image used as branding in the splash screen.
+    branding: assets/icon.png
+
+    # Dark Mode (Android 12)
+    #image_dark: assets/android12splash-invert.png
+    #color_dark: "#042a49"
+    #icon_background_color_dark: "#eeeeee"
+
+  web: false
+
+  # To hide the notification bar, use the fullscreen parameter.  Has no effect in web since web
+  # has no notification bar.  Defaults to false.
+  # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
+  #       To show the notification bar, add the following code to your Flutter app:
+  #       WidgetsFlutterBinding.ensureInitialized();
+  #       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  fullscreen: true
