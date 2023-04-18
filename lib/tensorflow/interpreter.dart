@@ -119,30 +119,30 @@ class Classifier {
   loadModel({Interpreter? interpreter}) async {
     try {
       InterpreterOptions? interpreterOptions;
-      // if (Platform.isAndroid) {
-      //   final gpuDelegateV2 = GpuDelegateV2(
-      //     options: GpuDelegateOptionsV2(
-      //       isPrecisionLossAllowed: false,
-      //       inferencePreference: TfLiteGpuInferenceUsage.fastSingleAnswer,
-      //       inferencePriority1: TfLiteGpuInferencePriority.minLatency,
-      //       inferencePriority2: TfLiteGpuInferencePriority.auto,
-      //       inferencePriority3: TfLiteGpuInferencePriority.auto,
-      //     ),
-      //   );
-      //   interpreterOptions = InterpreterOptions()
-      //     ..addDelegate(gpuDelegateV2)
-      //     ..threads = 4;
-      // } else if (Platform.isIOS) {
-      //   final gpuDelegateMetal = GpuDelegate(
-      //     options: GpuDelegateOptions(
-      //       allowPrecisionLoss: true,
-      //       waitType: TFLGpuDelegateWaitType.active,
-      //     ),
-      //   );
-      //   interpreterOptions = InterpreterOptions()
-      //     ..addDelegate(gpuDelegateMetal)
-      //     ..threads = 4;
-      // }
+      if (Platform.isAndroid) {
+        final gpuDelegateV2 = GpuDelegateV2(
+          options: GpuDelegateOptionsV2(
+            isPrecisionLossAllowed: false,
+            inferencePreference: TfLiteGpuInferenceUsage.fastSingleAnswer,
+            inferencePriority1: TfLiteGpuInferencePriority.minLatency,
+            inferencePriority2: TfLiteGpuInferencePriority.auto,
+            inferencePriority3: TfLiteGpuInferencePriority.auto,
+          ),
+        );
+        interpreterOptions = InterpreterOptions()
+          ..addDelegate(gpuDelegateV2)
+          ..threads = 4;
+      } else if (Platform.isIOS) {
+        final gpuDelegateMetal = GpuDelegate(
+          options: GpuDelegateOptions(
+            allowPrecisionLoss: true,
+            waitType: TFLGpuDelegateWaitType.active,
+          ),
+        );
+        interpreterOptions = InterpreterOptions()
+          ..addDelegate(gpuDelegateMetal)
+          ..threads = 4;
+      }
       _interpreter = interpreter ??
           await Interpreter.fromAsset(
             "model.tflite",
