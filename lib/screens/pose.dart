@@ -78,7 +78,6 @@ class PoseScreenState extends State<PoseScreen> {
 
     var isolateData = IsolateData(imageStream, classifier.interpreter.address);
     List<dynamic> inferenceResults = await inference(isolateData);
-
     setState(() {
       inferences = inferenceResults;
       predicting = false;
@@ -156,10 +155,10 @@ class RenderLandmarks extends CustomPainter {
   List<Offset> pointsRed = [];
 
   List<dynamic> edges = [
-    [0, 1], // nose to left_eye
-    [0, 2], // nose to right_eye
-    [1, 3], // left_eye to left_ear
-    [2, 4], // right_eye to right_ear
+    // [0, 1], // nose to left_eye
+    // [0, 2], // nose to right_eye
+    // [1, 3], // left_eye to left_ear
+    // [2, 4], // right_eye to right_ear
     [0, 5], // nose to left_shoulder
     [0, 6], // nose to right_shoulder
     [5, 7], // left_shoulder to left_elbow
@@ -180,7 +179,7 @@ class RenderLandmarks extends CustomPainter {
   }
   @override
   void paint(Canvas canvas, Size size) {
-    renderEdge(canvas, true);
+    renderEdge(canvas, size);
     canvas.drawPoints(PointMode.points, pointsGreen, pointGreen);
     canvas.drawPoints(PointMode.points, pointsRed, pointRed);
   }
@@ -188,21 +187,21 @@ class RenderLandmarks extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 
-  void renderEdge(Canvas canvas, bool isCorrect) {
+  void renderEdge(Canvas canvas, Size size) {
     for (List<dynamic> point in inferenceList) {
       if (point[2] > showPointConfidence) {
         if (point[2] < correctPointConfidence) {
           pointsRed.add(
             Offset(
-              point[0].toDouble() - (paddingX + 40),
-              point[1].toDouble() - (paddingY - 70),
+              point[0].toDouble() * size.width / 480,
+              point[1].toDouble() * size.height / 640,
             ),
           );
         } else {
           pointsGreen.add(
             Offset(
-              point[0].toDouble() - (paddingX + 40),
-              point[1].toDouble() - (paddingY - 70),
+              point[0].toDouble() * size.width / 480,
+              point[1].toDouble() * size.height / 640,
             ),
           );
         }
@@ -212,10 +211,10 @@ class RenderLandmarks extends CustomPainter {
     for (List<int> edge in edges) {
       if (inferenceList[edge[0]][2] > showPointConfidence &&
           inferenceList[edge[1]][2] > showPointConfidence) {
-        double vertex1X = inferenceList[edge[0]][0].toDouble() - (paddingX + 40);
-        double vertex1Y = inferenceList[edge[0]][1].toDouble() - (paddingY - 70);
-        double vertex2X = inferenceList[edge[1]][0].toDouble() - (paddingX + 40);
-        double vertex2Y = inferenceList[edge[1]][1].toDouble() - (paddingY - 70);
+        double vertex1X = inferenceList[edge[0]][0].toDouble() * size.width / 480;
+        double vertex1Y = inferenceList[edge[0]][1].toDouble() * size.height / 640;
+        double vertex2X = inferenceList[edge[1]][0].toDouble() * size.width / 480;
+        double vertex2Y = inferenceList[edge[1]][1].toDouble() * size.height / 640;
         final point1Confidence = inferenceList[edge[0]][2];
         final point2Confidence = inferenceList[edge[1]][2];
         // debugPrint("p1: $point1Confidence, p2: $point2Confidence");

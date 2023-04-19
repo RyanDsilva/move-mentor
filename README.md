@@ -6,7 +6,7 @@
     <img src="./assets/icon.png" width="200" height="200"/>
 </p>
 
-### Setup
+### Setup 🛠️
 
 Pre-Requisites: Flutter >= 3.7
 
@@ -45,3 +45,9 @@ flutter pub get
 ```
 flutter run
 ```
+
+### Model Specifications 👨🏻‍💻
+
+- Using the MoveNet Lightning Single Pose Model
+- Uses a 640x480 RGB image as input (Medium Resolution Preset for Android and iOS)
+- Outputs an array with [x, y, confidence] (x, y are scaled according to the input image size)
