@@ -51,3 +51,7 @@ flutter run
 - Using the MoveNet Lightning Single Pose Model
 - Uses a 640x480 RGB image as input (Medium Resolution Preset for Android and iOS)
 - Outputs an array with [x, y, confidence] (x, y are scaled according to the input image size)
+
+### Similarity Calulcation
+
+Angle Between Two Lines: [https://www.nagwa.com/en/explainers/407162748438/](https://www.nagwa.com/en/explainers/407162748438/)

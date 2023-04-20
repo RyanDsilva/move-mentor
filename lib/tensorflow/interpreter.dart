@@ -19,12 +19,29 @@ double getAngle(List<int> pointA, List<int> pointB, List<int> pointC) {
   return angle;
 }
 
+double getSlope(List<double> pointA, List<double> pointB) {
+  return (pointB[1]-pointA[1])/(pointB[0]-pointA[0]);
+}
+
+double getAngleTwoPoints(List<double> line1A, List<double> line1B, List<double> line2A, List<double> line2B) {
+  final slope1 = getSlope(line1A, line1B);
+  final slope2 = getSlope(line1A, line1B);
+  if (slope1 * slope2 == -1) {
+    return 90.00;
+  }
+  double radians = atan((slope1-slope2)/(1 + slope1*slope2));
+  double angle = (radians * 180 / pi).abs();
+  if (angle > 180) {
+    angle = 360 - angle;
+  }
+  return angle;
+}
+
 class Classifier {
   late Interpreter _interpreter;
   late ImageProcessor imageProcessor;
   late TensorImage inputImage;
   late List<Object> inputs;
-
   Map<int, Object> outputs = {};
   TensorBuffer outputLocations = TensorBufferFloat([]);
 

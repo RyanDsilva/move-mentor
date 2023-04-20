@@ -21,7 +21,6 @@ class IsolateUtils {
       _receivePort.sendPort,
       debugName: debugName,
     );
-
     _sendPort = await _receivePort.first;
   }
 
@@ -37,6 +36,11 @@ class IsolateUtils {
       List<dynamic> results = classifier.parseLandmarkData();
       isolateData.responsePort.send(results);
     }
+  }
+
+  void stop() async {
+    // debugPrint('[ISOLATE] stopped');
+    _isolate.kill(priority: Isolate.immediate);
   }
 }
 
