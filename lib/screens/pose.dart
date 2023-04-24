@@ -15,7 +15,7 @@ class PoseScreen extends StatefulWidget {
   PoseScreenState createState() => PoseScreenState();
 }
 
-class PoseScreenState extends State<PoseScreen> {
+class PoseScreenState extends State<PoseScreen> with WidgetsBindingObserver {
   CameraImage? cameraImage;
   CameraController? cameraController;
   late Classifier classifier;
@@ -40,19 +40,31 @@ class PoseScreenState extends State<PoseScreen> {
     super.dispose();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // App state changed before we got the chance to initialize.
+    if (cameraController == null || !cameraController!.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      // Free up memory when camera not active
+      cameraController?.dispose();
+    }
+  }
+
   void initAsync() async {
     List<CameraDescription> cameras = await availableCameras();
     isolate = IsolateUtils();
     await isolate.start();
     classifier = Classifier();
     classifier.loadModel();
-    loadCamera(cameras);
+    loadCamera(cameras[1]);
   }
 
-  void loadCamera(List<CameraDescription> cameras) {
+  void loadCamera(CameraDescription selectedCamera) {
     setState(() {
       cameraController = CameraController(
-        cameras[1],
+        selectedCamera,
         ResolutionPreset.medium,
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.bgra8888,
@@ -94,6 +106,29 @@ class PoseScreenState extends State<PoseScreen> {
     return results;
   }
 
+  Future<void> focusCamera(TapUpDetails details) async {
+    if (cameraController?.value != null) {
+      if (cameraController!.value.isInitialized) {
+        final x = details.localPosition.dx;
+        final y = details.localPosition.dy;
+
+        double fullWidth = MediaQuery.of(context).size.width;
+        double cameraHeight = fullWidth * cameraController!.value.aspectRatio;
+
+        double xp = x / fullWidth;
+        double yp = y / cameraHeight;
+
+        Offset point = Offset(xp, yp);
+        if ((point.dx < 0 || point.dx > 1 || point.dy < 0 || point.dy > 1)) {
+          debugPrint(
+              'The values of point should be anywhere between (0,0) and (1,1).');
+        } else {
+          await cameraController!.setFocusPoint(point);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +149,12 @@ class PoseScreenState extends State<PoseScreen> {
                           ? Container()
                           : AspectRatio(
                               aspectRatio: cameraController!.value.aspectRatio,
-                              child: CameraPreview(cameraController!),
+                              child: GestureDetector(
+                                onTapUp: (details) async {
+                                  await focusCamera(details);
+                                },
+                                child: CameraPreview(cameraController!),
+                              ),
                             ),
                     ),
                   )
@@ -259,18 +299,6 @@ class RenderLandmarks extends CustomPainter {
           );
         }
       }
-    }
-
-    for (List<int> edge in edges) {
-      double vertex1X = pose['keypoints'][edge[0]]['x'].toDouble() * size.width;
-      double vertex1Y = pose['keypoints'][edge[0]]['y'].toDouble() * size.height;
-      double vertex2X = pose['keypoints'][edge[1]]['x'].toDouble() * size.width;
-      double vertex2Y = pose['keypoints'][edge[1]]['y'].toDouble() * size.height;
-      canvas.drawLine(
-        Offset(vertex1X, vertex1Y),
-        Offset(vertex2X, vertex2Y),
-        edgeWhite,
-      );
     }
 
     for (List<int> edge in edges) {
